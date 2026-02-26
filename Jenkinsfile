@@ -5,26 +5,11 @@ pipeline {
         maven 'Maven-3'
     }
 
-    stages {
-
-        stage('Build') {
-            steps {
-                sh 'mvn clean compile'
-            }
-        }
-
-        stage('Unit Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube-Local') {
-                    sh 'mvn sonar:sonar'
-                }
-            }
-        }
-    }
+    stage('Build + Test + Sonar') {
+    steps {
+        withSonarQubeEnv('SonarQube-Local') {
+            sh 'mvn clean verify sonar:sonar'
+         }
+     }
+  }
 }
